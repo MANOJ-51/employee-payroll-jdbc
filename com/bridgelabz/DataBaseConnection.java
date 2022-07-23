@@ -1,37 +1,36 @@
 package com.bridgelabz;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 
 public class DataBaseConnection {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("welcome to Data Base Connection " + "\n");
 
         //user details
         String jdbcUrl = "jdbc:mysql://localhost:3306/payroll_service";
         String userName = "root";
         String password = "Manoj@451";
+        Connection connection = null;
 
         //connecting to database
         try {
             System.out.println("Connecting to database :" + jdbcUrl);
-            Connection connection = DriverManager.getConnection(jdbcUrl, userName, password);
+            connection = DriverManager.getConnection(jdbcUrl, userName, password);
             System.out.println("Connection is successful" + connection + "\n");
 
             //creating a statement
             Statement statement = connection.createStatement();
-            String quary = "update employee_payroll set basic_pay=300000 where name = 'terissa';";
-            int rows = statement.executeUpdate(quary);
+            String query = "SELECT * FROM employee_payroll WHERE start_date BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW());";
+            ResultSet resultSet = statement.executeQuery(query);
 
-            if (rows > 0) {
-                System.out.println("the details are updated");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name") + " " + resultSet.getDate("start_date"));
             }
-
         } catch (Exception exception) {
             exception.printStackTrace();
+        } finally {
+            connection.close();
         }
     }
 }
