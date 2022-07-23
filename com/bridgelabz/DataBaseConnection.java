@@ -21,11 +21,13 @@ public class DataBaseConnection {
 
             //creating a statement
             Statement statement = connection.createStatement();
-            String query = "select sum(salary) from employee_payroll where gender = 'F' group by gender;";
-            ResultSet resultSet = statement.executeQuery(query);
+            String query = "insert into employee_payroll (name,salary,start_date,gender,phone_number,address,department,basic_pay,\n" +
+                    "deductions,taxable_pay,income_tax,net_pay) values\n" +
+                    "('suhas',40000.00,'2020-04-02','M',null,'ap','sales',null,null,null,null,null);";
+            int rows = statement.executeUpdate(query);
 
-            while (resultSet.next()) {
-                System.out.println(resultSet.getDouble("sum(salary)"));
+            if (rows > 0) {
+                System.out.println("contact added successfully");
             }
         } catch (Exception exception) {
             exception.printStackTrace();
