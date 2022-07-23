@@ -1,41 +1,39 @@
 package com.bridgelabz;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
-import java.util.Enumeration;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 
 public class DataBaseConnection {
     public static void main(String[] args) {
-        System.out.println("welcome to Data Base Connection ");
+        System.out.println("welcome to Data Base Connection " + "\n");
 
+        //user details
         String jdbcUrl = "jdbc:mysql://localhost:3306/payroll_service";
         String userName = "root";
         String password = "Manoj@451";
-        Connection connection;
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Driver loaded");
-        } catch (ClassNotFoundException exception) {
-            throw new IllegalStateException("cannot find the Driver in the classpath !", exception);
-        }
-        listDrivers();
-
+        //connecting to database
         try {
             System.out.println("Connecting to database :" + jdbcUrl);
-            connection = DriverManager.getConnection(jdbcUrl, userName, password);
-            System.out.println("Connection is successful" + connection);
+            Connection connection = DriverManager.getConnection(jdbcUrl, userName, password);
+            System.out.println("Connection is successful" + connection + "\n");
+
+            //creating a statement
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from employee_payroll;");
+
+            System.out.println("The data from mySql is " + "\n");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String gender = resultSet.getString("gender");
+                System.out.println(id + " " + name + " " + gender);
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
-        }
-    }
-
-    private static void listDrivers() {
-        Enumeration<Driver> driverList = DriverManager.getDrivers();
-        while (driverList.hasMoreElements()) {
-            Driver driverClass = (Driver) driverList.nextElement();
-            System.out.println("    " + driverClass.getClass().getName());
         }
     }
 }
