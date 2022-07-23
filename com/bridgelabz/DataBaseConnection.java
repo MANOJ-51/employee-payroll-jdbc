@@ -23,15 +23,13 @@ public class DataBaseConnection {
 
             //creating a statement
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from employee_payroll;");
+            String quary = "update employee_payroll set basic_pay=300000 where name = 'terissa';";
+            int rows = statement.executeUpdate(quary);
 
-            System.out.println("The data from mySql is " + "\n");
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String gender = resultSet.getString("gender");
-                System.out.println(id + " " + name + " " + gender);
+            if (rows > 0) {
+                System.out.println("the details are updated");
             }
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
