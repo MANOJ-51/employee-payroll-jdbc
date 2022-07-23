@@ -20,17 +20,18 @@ public class DataBaseConnection {
             System.out.println("Connection is successful" + connection + "\n");
 
             //creating a statement
-            Statement statement = connection.createStatement();
-            String query = "delete from employee_payroll where name = 'sujatha';";
-            int rows = statement.executeUpdate(query);
+            String name = "terissa";
+            String query = "select * from employee_payroll where name = ? ;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (rows > 0) {
-                System.out.println("contact deleted successfully");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt("id") + resultSet.getString("gender") + resultSet.getDate("start_date"));
             }
+
         } catch (Exception exception) {
             exception.printStackTrace();
-        } finally {
-            connection.close();
         }
     }
 }
