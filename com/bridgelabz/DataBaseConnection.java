@@ -21,11 +21,11 @@ public class DataBaseConnection {
 
             //creating a statement
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM employee_payroll WHERE start_date BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW());";
+            String query = "select sum(salary) from employee_payroll where gender = 'F' group by gender;";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("name") + " " + resultSet.getDate("start_date"));
+                System.out.println(resultSet.getDouble("sum(salary)"));
             }
         } catch (Exception exception) {
             exception.printStackTrace();
